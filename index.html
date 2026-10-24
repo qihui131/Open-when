@@ -195,12 +195,14 @@ var LETTERS = [
 ];
 /* ===== END EDIT ===== */
 
-var read = {};
-try { if (location.search.indexOf("reset") !== -1) localStorage.removeItem("openwhen-read"); } catch (e) {}
-try { read = JSON.parse(localStorage.getItem("openwhen-read") || "{}") || {}; } catch (e) { read = {}; }
-function save(){ try { localStorage.setItem("openwhen-read", JSON.stringify(read)); } catch (e) {} }
-(function(){ var ch = false; for (var k in read) { if (read[k] === true) { read[k] = new Date().toISOString(); ch = true; } } if (ch) save(); })();
-
+- var read = {};
+- try { read = JSON.parse(localStorage.getItem("openwhen-read") || "{}") || {}; } catch (e) { read = {}; }
++ var read = {};
++ try { if (location.search.indexOf("reset") !== -1) localStorage.removeItem("openwhen-read"); } catch (e) {}
++ try { read = JSON.parse(localStorage.getItem("openwhen-read") || "{}") || {}; } catch (e) { read = {}; }
++ function save(){ try { localStorage.setItem("openwhen-read", JSON.stringify(read)); } catch (e) {} }
++ (function(){ var ch = false; for (var k in read) { if (read[k] === true) { read[k] = new Date().toISOString(); ch = true; } } if (ch) save(); })();
+  
 var $ = function (id) { return document.getElementById(id); };
 $("sub").textContent = "whenever you need me."
 $("fromCity").textContent = CONFIG.fromCity;
