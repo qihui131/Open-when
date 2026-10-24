@@ -100,10 +100,8 @@ footer{text-align:center;margin-top:40px;font-family:"Caveat",cursive,sans-serif
 <script>
 /* ===== EDIT THIS SECTION ===== */
 var CONFIG = {
-  to: "Babe",            // his name or nickname
-  from: "Your girl",     // how you sign off
-  fromCity: "London",    // your city
-  toCity: "His city",    // his city
+  fromCity: "Malaysia",    // your city
+  toCity: "Oxford",    // his city
   footer: "Every mile is worth it. ♥"
 };
 var LETTERS = [
@@ -203,7 +201,7 @@ function save(){ try { localStorage.setItem("openwhen-read", JSON.stringify(read
 (function(){ var ch = false; for (var k in read) { if (read[k] === true) { read[k] = new Date().toISOString(); ch = true; } } if (ch) save(); })();
 
 var $ = function (id) { return document.getElementById(id); };
-$("sub").textContent = "For " + CONFIG.to + ", whenever you need me.";
+$("sub").textContent = "whenever you need me.";
 $("fromCity").textContent = CONFIG.fromCity;
 $("toCity").textContent = CONFIG.toCity;
 $("foot").textContent = CONFIG.footer;
