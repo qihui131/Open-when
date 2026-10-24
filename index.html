@@ -7,7 +7,6 @@
 <meta name="description" content="A collection of Open When… letters.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
-localStorage.removeItem("openwhen-read"); location.reload(); 
 <style>
 :root{
   --bg:#e9e4d8; --paper:#fbf8f0; --ink:#1d2b4a; --soft:#5a6580;
@@ -196,7 +195,8 @@ var LETTERS = [
 ];
 /* ===== END EDIT ===== */
 
-var read = {};
+var read = {}; 
+try { if (location.search.indexOf("reset") !== -1) localStorage.removeItem("openwhen-read"); } catch (e) {} 
 try { read = JSON.parse(localStorage.getItem("openwhen-read") || "{}") || {}; } catch (e) { read = {}; }
 function save(){ try { localStorage.setItem("openwhen-read", JSON.stringify(read)); } catch (e) {} }
 (function(){ var ch = false; for (var k in read) { if (read[k] === true) { read[k] = new Date().toISOString(); ch = true; } } if (ch) save(); })();
