@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Open When…</title>
+<meta name="description" content="A collection of Open When… letters.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9e4d8; --paper:#fbf8f0; --ink:#1d2b4a; --soft:#5a6580;
+  --red:#cf3b2c; --blue:#2255a8; --line:rgba(29,43,74,.18);
+  --shadow:rgba(29,43,74,.22);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10172a; --paper:#1b2440; --ink:#eef0f7; --soft:#a3abc4;
+    --red:#ee6a59; --blue:#7aa5f0; --line:rgba(238,240,247,.2); --shadow:rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10172a; --paper:#1b2440; --ink:#eef0f7; --soft:#a3abc4;
+  --red:#ee6a59; --blue:#7aa5f0; --line:rgba(238,240,247,.2); --shadow:rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Fraunces",Georgia,serif;min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:28px 20px 60px}
+header{text-align:center;padding:28px 0 8px}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:clamp(2.4rem,8vw,4.2rem);margin:0;letter-spacing:-.02em;line-height:1}
+.sub{font-family:"Caveat",cursive,sans-serif;font-size:1.6rem;color:var(--soft);margin:12px 0 0}
+.route{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px auto 6px;font-size:.95rem;color:var(--soft)}
+.route i{flex:0 0 90px;border-top:2px dashed var(--line);position:relative}
+.route i::after{content:"✈";position:absolute;left:50%;top:-.8em;transform:translateX(-50%);background:var(--bg);padding:0 6px;color:var(--red)}
+.count{text-align:center;color:var(--soft);font-size:.95rem;margin:10px 0 26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.env{
+  position:relative;text-align:left;cursor:pointer;border:0;color:var(--ink);
+  background:var(--paper);padding:26px 20px 20px;min-height:150px;font:inherit;
+  box-shadow:0 6px 16px var(--shadow);
+  border:7px solid transparent;
+  border-image:repeating-linear-gradient(135deg,var(--red) 0 14px,var(--paper) 14px 24px,var(--blue) 24px 38px,var(--paper) 38px 48px) 7;
+  transition:transform .18s ease;
+}
+.env:hover,.env:focus-visible{transform:translateY(-4px) rotate(-.6deg);outline:none}
+.env:focus-visible{box-shadow:0 0 0 3px var(--blue),0 6px 16px var(--shadow)}
+.env small{display:block;font-family:"Caveat",cursive,sans-serif;font-size:1.35rem;color:var(--soft);line-height:1}
+.env strong{display:block;font-size:1.35rem;line-height:1.2;margin-top:6px;padding-right:56px}
+.stamp{position:absolute;top:12px;right:12px;width:46px;height:54px;display:grid;place-items:center;font-size:1.5rem;
+  border:2px dashed var(--red);background:color-mix(in srgb,var(--red) 10%,var(--paper));transform:rotate(4deg)}
+.env.read{opacity:.72}
+.env.read .stamp{border-style:solid;border-color:var(--blue);background:color-mix(in srgb,var(--blue) 10%,var(--paper))}
+.badge{position:absolute;right:14px;bottom:12px;font-family:"Caveat",cursive,sans-serif;font-size:1.25rem;color:var(--blue);transform:rotate(-4deg);border:2px solid var(--blue);padding:0 8px;border-radius:4px}
+.random{display:block;margin:34px auto 0;background:var(--red);color:#fff;border:0;font:700 1rem "Fraunces",Georgia,serif;padding:13px 24px;border-radius:999px;cursor:pointer}
+.random:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+footer{text-align:center;margin-top:40px;font-family:"Caveat",cursive,sans-serif;font-size:1.5rem;color:var(--soft)}
+.theme{position:fixed;right:14px;top:calc(12px + env(safe-area-inset-top,0px));background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:999px;width:40px;height:40px;cursor:pointer;font-size:1.1rem;z-index:5}
+/* letter */
+.veil{position:fixed;inset:0;background:rgba(10,16,32,.66);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.veil.on{display:flex}
+.letter{background:var(--paper);width:min(560px,100%);max-height:88vh;overflow:auto;padding:34px 30px 28px;position:relative;
+  border-top:8px solid var(--red);border-bottom:8px solid var(--blue);box-shadow:0 20px 50px rgba(0,0,0,.4);
+  animation:rise .45s ease}
+@keyframes rise{from{transform:translateY(50px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.letter h2{font-family:"Caveat",cursive,sans-serif;font-size:2.3rem;margin:0 0 32px;line-height:1.1;color:var(--red)}
+.opened{font-family:"Caveat",cursive,sans-serif;font-size:1.3rem;color:var(--soft);margin:22px 0 0;text-align:right}
+.letter p{font-family:"Caveat",cursive,sans-serif;font-size:1.65rem;line-height:1.35;margin:0 0 .9em;white-space:pre-line}
+.letter .sign{margin:0;text-align:right}
+.x{position:absolute;right:10px;top:6px;background:none;border:0;color:var(--soft);font-size:1.8rem;cursor:pointer;line-height:1;padding:6px 10px}
+.x:focus-visible{outline:2px solid var(--blue)}
+@media (prefers-reduced-motion:reduce){.letter{animation:none}.env{transition:none}}
+</style>
+</head>
+<body>
+<button class="theme" id="theme" aria-label="Switch light or dark">◐</button>
+<div class="wrap">
+  <header>
+    <h1>Open When…</h1>
+    <p class="sub" id="sub"></p>
+    <div class="route"><span id="fromCity"></span><i></i><span id="toCity"></span></div>
+  </header>
+  <p class="count" id="count"></p>
+  <main class="grid" id="grid"></main>
+  <button class="random" id="random">Pick one for me</button>
+  <footer id="foot"></footer>
+</div>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="lt">
+  <article class="letter" id="letter">
+    <button class="x" id="close" aria-label="Close letter">×</button>
+    <h2 id="lt"></h2>
+    <p id="lb"></p>
+    <div class="opened" id="od"></div>
+  </article>
+</div>
+
+<script>
+/* ===== EDIT THIS SECTION ===== */
+var CONFIG = {
+  to: "Babe",            // his name or nickname
+  from: "Your girl",     // how you sign off
+  fromCity: "London",    // your city
+  toCity: "His city",    // his city
+  footer: "Every mile is worth it. ♥"
+};
+var LETTERS = [
+{icon:"💭",when:"you miss me",body:"I miss you too. Probably right now, actually.\n\nClose your eyes and picture us on the sofa, your feet on mine, arguing about what to watch. That’s real, and it’s coming back around soon.\n\nText me. I’ll drop everything."},
+{icon:"🌧️",when:"you had a rough day",body:"Come here. Virtual hug, the long kind.\n\nYou don’t have to explain or fix anything. You’re allowed to be tired.\n\nGo get something to eat, put on something comfy, and call me when you’re ready. I’m so proud of you for getting through today."},
+{icon:"🌙",when:"you can’t sleep",body:"Put your phone down (stop playing games...) for a second and take a slow breath in.\n\nI’m thinking of you from the other side of the world, and it’s the same moon, the same sky.\n\nNow think of the best day we ever had. Start there. Goodnight, love."},
+{icon:"🫶",when:"you doubt us",body:"Distance is hard, and some days it feels heavier than others. That’s normal, and it doesn’t mean we’re failing.\n\nI chose you before the miles, and I’d choose you again today. Every call, every plan, every countdown is me choosing you.\n\nTalk to me about it. We’ll figure it out together."},
+{icon:"✈️",when:"you’re counting down to seeing me",body:"Almost there!\n\nI’m already planning the first thing I’ll do when I see you. (if I’m Free)༙\n\nStart packing. Bring your good mood. Be ready for lots of hugs."},
+{icon:"😤",when:"you’re mad at me",body:"Okay. I probably deserve it.\n\nTake the time you need. When you’re ready, I’d love to listen properly, and I’m sorry in advance for whatever I did.\n\nI love you even when we’re being annoying. Especially then, maybe."},
+{icon:"🎂",when:"it’s your birthday",body:"Happy birthday to my favourite person!\n\nI wish I could be next to you with a terrible singing voice and a cake.\n\nMake a wish. I’m pretty sure I know what it is, because mine is the same."},
+{icon:"🌅",when:"you wake up and I’m not there",body:"Good morning, handsome. I’m sending you my sleepiest hug across the miles. Drink some water, face the day, and know I’m cheering for you."},
+{icon:"🍕",when:"you can’t decide what to eat",body:"Get the thing you actually want, not the sensible thing. Eat it slowly and send me a photo. I’ll pretend I’m sharing it."},
+{icon:"🤗",when:"you need a hug",body:"Come here, you big golden retriever. Imagine me giving you a long hug. No questions, no need to explain anything.\n\nSince I can't be there right now, this letter will have to do. Hug delivered. 🤍"},
+{icon:"📚",when:"you’re stressed about work",body:"You’ve handled hard things before and you’ll handle this too. Take it one task at a time, and take a break when you need one."},
+{icon:"🥶",when:"you think I’m too cold",body:"I know I can be difficult to read sometimes. I might not always say the sweetest things, but that doesn't mean I don't feel them.\n\nI'm still learning how to show you love in ways you can recognise. So please tell me when you need reassurance. I may be a black cat, but I'm still learning to love you better."},
+{icon:"🧸",when:"you feel lonely",body:"You’re not alone, even when it feels that way. I’m a call away, and my heart is with you every second of the day."},
+{icon:"💪",when:"you need motivation",body:"You are more capable than you think. Do the first small step now, and I’ll be proud of you at every step after it."},
+{icon:"🥺",when:"you need to hear I’m proud of you",body:"I’m proud of you. Of how hard you try, how kind you are, and how you keep going. Say it back to yourself too."},
+{icon:"☕",when:"you need a morning boost",body:"Today you will do great, because you’re you. Go get coffee and be unstoppable. I’ll be waiting with a ridiculous number of heart emojis."},
+{icon:"🥂",when:"you’re out with friends and miss me",body:"Have the best night. Laugh loudly, take silly photos, and send me one. I love that you have people who love you too."},
+{icon:"😴",when:"you’re exhausted",body:"Rest is productive. Cancel what you can, put on soft clothes and sleep. The world will still be there tomorrow, and so will I."},
+{icon:"🤒",when:"you’re sick",body:"I hate that I can’t bring you soup. Drink fluids, rest, and let someone look after you. I’ll look after you from here with endless messages."},
+{icon:"🌻",when:"you need to feel appreciated",body:"Thank you for making time for me, remembering little things, and trying to make this relationship work. I know I don't always react dramatically, but I notice your efforts. I appreciate you more than my facial expressions may suggest. Seriously."},
+{icon:"📸",when:"you want to see my face",body:"Video call me, now. I’ll wear whatever, my hair will be a mess, and I’ll still be happy to see you."},
+{icon:"💬",when:"you’re overthinking",body:"Breathe. Whatever the thought is, it’s probably louder than it is true. Tell me about it and we’ll untangle it together."},
+{icon:"🌍",when:"the time difference is winning",body:"We keep missing each other by hours, but I promise I’m not going anywhere. Leave me a voice note and I’ll answer when I wake up."},
+{icon:"🛫",when:"you’re about to fly to me",body:"Take a deep breath, check your passport, and come find me. I’ll be the one at arrivals, probably crying a bit."},
+{icon:"🛬",when:"you just left me",body:"I know the goodbye hurts. It hurts me too. But every goodbye is just the start of the next countdown. See you soon, my love."},
+{icon:"🍽️",when:"you’re eating alone",body:"What are you eating? I hope it's something decent. If i were there, I'd probably ask for a bite and decide yours tastes better than mine. One day we'll eat together without coordinating time zones. Until then, send me pictures of good food. This is important research."},
+{icon:"😘",when:"you need a kiss",body:"Here’s one, delivered by the fastest courier I know: my imagination. Catch it. Keep it on your cheek until I see you. ‍️‍‍"},
+{icon:"🌹",when:"it’s Valentine’s Day",body:"Valentine’s Day is better with you in my life, even when you’re far away. You’re my favourite person every single day of the year. ️‍"},
+{icon:"🎄",when:"it’s Christmas",body:"Merry Christmas, my love. Wherever we are, you’re my favourite gift. Next year I’m wrapping myself and sitting under your tree."},
+{icon:"🎆",when:"it’s New Year’s",body:"New year, same person I want to spend it with. May this be the year the distance finally shrinks. I love you more than I did last year."},
+{icon:"💍",when:"it’s our anniversary",body:"Look how far we’ve come. Through all the miles and missed calls, we kept choosing each other. Happy anniversary, my favourite adventure."},
+{icon:"🤗",when:"you need a hug",body:"Wrap your arms around yourself and imagine they’re mine. Squeeze tight. I’m squeezing back, and I’m not letting go for a while. 🫂"},
+{icon:"💘",when:"you wonder if I love you",body:"I know I'm not always good at expressing affection. Sometimes it's easier to show that I care than to say it, but I remember little things. So yes.\n\nI love you. Written evidence. Keep it safe."},
+{icon:"🏆",when:"you got good news",body:"I knew it! You worked hard and it shows. I’m jumping around my room right now. Tell me every detail tonight."},
+{icon:"😬",when:"you’re nervous about something big",body:"Nerves just mean you care. You’re prepared and you’re brilliant. Walk in like you own it, then call me and tell me everything."},
+{icon:"📞",when:"our call got cut off",body:"Ugh, bad signal. I was in the middle of saying I love you, so consider it said. Call me back, I’m right here."},
+{icon:"💭",when:"you miss me",body:"You miss me? Understandable. I miss you too. What will I do if I were there.. Until teleportation becomes available, you'll have to settle for this letter."},
+{icon:"🍫",when:"you’re craving something sweet",body:"Go get chocolate. No guilt. You’re sweet enough already, but I support the mission. Eat one square for me."},
+{icon:"🌧️",when:"it’s raining",body:"Rainy days were made for being cosy and thinking of someone you love. Make tea, find a blanket, and call me."},
+{icon:"☀️",when:"the sun is out",body:"Go outside and let the sun hit your face. That warm feeling is me sending you good vibes. Take a walk and tell me about it."},
+{icon:"🕊️",when:"we’ve had an argument (just in case)",body:"I might need time to organise my thoughts when I'm upset, but I don't want us to avoid important conversations. When we're ready, let's talk about what happened and what we need. I might be annoyed with you, but I'm still your girlfriend.\n\nUnfortunately for you."},
+{icon:"💭",when:"something reminds you of me",body:"Take a picture and send it to me. Tell me why it reminded you of me, even if the reasoning makes absolutely no sense. I want to know what kinds of things make their way into your thoughts when I'm not around. Yes, I will ask follow-up questions."},
+{icon:"🥀",when:"you failed at something",body:"One setback doesn’t define you. You learn, you try again, and I’m still your biggest fan. Failure just means you’re trying."},
+{icon:"🎤",when:"you feel like being silly",body:"Do it. Dance badly, sing loudly, send me a video. I’ll love every second."},
+{icon:"🫶",when:"you’re afraid I’m tired of LDR",body:"If you're worried about how I'm feeling, please ask me. Long distance can be tiring, and we should be honest about that. I want us to check in, adjust our routines, and tell each other what we need instead of guessing from message replies."},
+{icon:"🏃",when:"you’re working out",body:"Look at you, being disciplined! Push through the last set. I think you’re strong in every way that matters."},
+{icon:"🌌",when:"you wish I were there",body:"If i were there, I'd probably want food, a walk, or a quiet afternoon together. Nothing particularly fancy. I don't need every moment to be a grand romantic occasion. I'd just like being with you."},
+{icon:"🎬",when:"you want a movie night",body:"Pick a film, press play at the same time as me, and keep the call going. I’ll even stay quiet. Maybe."},
+{icon:"🕰️",when:"we haven’t talked in a while",body:"Life gets busy, and that’s okay. I’m not keeping score. I just miss your voice. Whenever you can, I’m here."},
+{icon:"🗓️",when:"the next visit feels too far",body:"I know, it feels endless. But each day you’re closer, and every one is a little more of us. Hang in there, love."},
+{icon:"🥹",when:"you feel emotional",body:"Let it out. Crying is okay, and so is not knowing why. I’m proud of you for feeling things. I’m here."},
+{icon:"🎂",when:"it’s my birthday",body:"Call me! I’d like to hear your voice most of all today. Having you in my life is the best present I could ask for."},
+{icon:"🩹",when:"you’ve made a mistake",body:"If you made a mistake, fix what you can, learn what you need to, and forgive yourself enough to move forward. Punishing yourself won't change what happened. You can take responsibility without being cruel to yourself. Remember that, ok?"},
+{icon:"🧪",when:"your experiment fails",body:"I know how much time and effort you put into your experiments, so I can imagine how frustrating it must be when things don't turn out the way you expected. I won't pretend to understand every detail of your research, but I do understand that you care about what you're doing.\n\nOne failed experiment doesn't erase everything you've learned or the work you've already put in. You don't have to turn every setback into a success immediately. I hope you get a better result next time. And until then, please remember to be a little kinder to yourself."},
+{icon:"🌧️",when:"you’re having a bad day",body:"Whatever happened today, you can complain to me if you want. I'll listen (even if I don't have a solution). If you don't want to talk about it, that's fine too. We can talk about something stupid instead. Just don't take out all your frustration on yourself, okay? One bad day doesn't mean your whole life is going badly.\n\nGo eat something and rest a little. That's an order!"},
+{icon:"🧠",when:"your brain won’t stop",body:"Write the thoughts down, close the notebook, and let them wait until tomorrow. They’ll be smaller in the morning, I promise."},
+{icon:"🪐",when:"you feel small",body:"The universe is huge, and somehow we found each other in it. That’s a miracle, and you’re very much not small to me."},
+{icon:"🧗",when:"you feel like giving up",body:"You've come a long way to get here. Take a breath, rest if you need to, and look at things again when your mind is clearer. I'll be quietly cheering for you, even on the days when you don't feel like cheering for yourself."},
+{icon:"🙏",when:"you need patience",body:"Good things take time, and we’re one of them. Be gentle with yourself and with us. We’re doing so well."},
+{icon:"🫠",when:"you’re burnt out",body:"Stop. Switch everything off. You can’t pour from an empty cup, and you’re allowed to rest without earning it first. Maybe for now, just choose the next thing that needs your attention. Not the next ten things. Just one. And remember that you're allowed to rest in between. You don't need to earn every moment of rest by exhausting yourself first."},
+{icon:"🥰",when:"you’re smiling at your phone",body:"Caught you! I hope it’s because of me. If not, I’m choosing to believe it is. That smile is my favourite thing."},
+{icon:"🌟",when:"you’re being too hard on yourself",body:"Talk to yourself like you talk to me when I’m down: gently. You’re doing better than you think, and I see it."},
+{icon:"📝",when:"you have a big decision to make",body:"Trust your gut and your heart. Whatever you choose, I’m on your side. We’ll deal with the rest together."},
+{icon:"🤗",when:"you miss physical affection",body:"I know a phone screen isn't a hug. I wish I could hold your hand or sit beside you after a long day. When we meet again, let's enjoy the little moments without rushing. And yes, you can have an extra-long hug. Don't request a formal extension."},
+{icon:"🎓",when:"you reach a big milestone",body:"You did it. All the late nights and doubts led here. I’m so proud I could burst. Let’s celebrate properly when we’re together."},
+{icon:"🍀",when:"you need luck",body:"Here’s every bit of luck I have, tied up in a little bow. Go and be brilliant. I believe in you completely."},
+{icon:"🐢",when:"you feel behind everyone else",body:"Someone else's progress doesn't make yours meaningless. Everyone's project, circumstances, and challenges are different. I know you want to do well, but please don't turn that ambition into a reason to hate yourself. Your progress still counts, even when it's slower than you hoped."},
+{icon:"🌠",when:"you’re looking at the stars",body:"Pick one and I’ll look at the same one. That’s our little meeting place, no matter how far apart we are."},
+{icon:"🧩",when:"you feel like something’s missing",body:"It’s me, and I’m missing you right back. We fit, even across oceans. The gap closes soon, I promise."},
+{icon:"🔬",when:"you’ve had a successful experiment",body:"WAIT, IT WORKED?! I'm so happy for you! I know how much time and effort you've put into this. You deserve to enjoy this moment. Tell me everything, even if I need a simplified explanation.\n\nI'm proud of you, my little scientist. 🥹"},
+{icon:"🔋",when:"you’re running on empty",body:"Plug in, rest and recharge. I’ll send you a bit of my energy and a lot of love. Take as long as you need."},
+{icon:"🛏️",when:"you’re getting into bed",body:"Sleep tight, love. Dream something good, preferably about me. Tomorrow is another day closer to the next time we’re together ."},
+{icon:"🥼",when:"you’ve been in the lab all day",body:"🫵 Hello, lab creature. Have you eaten? Drunk water? Gone home? I'm asking because I suspect the answer to at least one is no. Please take care of yourself. Your experiment needs a researcher, but I need my boyfriend to remain a functioning human being."},
+{icon:"🕯️",when:"you want something romantic",body:"Dim the lights, put on something slow, and imagine me asking you to dance. I’d spin you around the room, like the spinning teacup"},
+{icon:"💌",when:"you’ve read every letter",body:"All of them! You nerd. Don’t ask me for another batch, I’m out of idea now. xD"},
+{icon:"🌈",when:"you need hope",body:"Things get brighter. They always do, and I’ll be holding the umbrella until they do. Better days are just ahead."},
+{icon:"🧘",when:"you need to calm down",body:"In for four, hold for four, out for four. Again. Whatever it is, it can wait a minute. I’m with you."},
+{icon:"🥾",when:"you’re trying something new",body:"Be brave and enjoy it. You’ll be great, or at least entertaining, and either way I’ll want the full story."},
+{icon:"🌊",when:"you’re near the sea",body:"Listen to the waves for a minute. Somewhere across all that water is me, thinking of you and sending love on the tide. 🫢"},
+{icon:"🏙️",when:"you’re walking home at night",body:"Text me when you’re inside. And while you walk, remember that someone out there worries about you because they love you."},
+{icon:"🗺️",when:"you want to plan an adventure",body:"Pick a place, any place, and tell me. We’ll make a list, save up, and go."},
+{icon:"💞",when:"you want to know why I love you",body:"Because you’re kind, you make me laugh, you make me feel confident and you make me feel at home wherever I am. There are a hundred more reasons."},
+{icon:"📷",when:"you’re looking through old photos",body:"Look at us. Look how happy we are. Every photo is proof that the best things are worth waiting for, and there are plenty more to take."},
+{icon:"🏠",when:"you’re homesick",body:"Home isn’t only a place. Sometimes it’s a person, and I hope you can feel me with you, even from far away. Call me and tell me what you miss."},
+{icon:"🎉",when:"you’re celebrating without me",body:"Raise a glass for me and enjoy every minute. I’m so happy you’re having fun, and I promise I’ll catch up on the party the second we’re together."},
+{icon:"🙏",when:"you want to know what I’m grateful for",body:"I’m grateful for your presence, your patience and the way you try, even when time zones and schedules make everything hard. Thank you for loving me well. ️"},
+{icon:"🔔",when:"you need a reminder that I’m yours",body:"I’m yours. Every day, every mile, every ordinary day. Nothing about the distance changes that. Hold on to it whenever it feels far."}
+];
+/* ===== END EDIT ===== */
+
+var read = {};
+try { read = JSON.parse(localStorage.getItem("openwhen-read") || "{}") || {}; } catch (e) { read = {}; }
+function save(){ try { localStorage.setItem("openwhen-read", JSON.stringify(read)); } catch (e) {} }
+(function(){ var ch = false; for (var k in read) { if (read[k] === true) { read[k] = new Date().toISOString(); ch = true; } } if (ch) save(); })();
+
+var $ = function (id) { return document.getElementById(id); };
+$("sub").textContent = "For " + CONFIG.to + ", whenever you need me.";
+$("fromCity").textContent = CONFIG.fromCity;
+$("toCity").textContent = CONFIG.toCity;
+$("foot").textContent = CONFIG.footer;
+
+function fmt(v, short){
+  var d = new Date(v); if (isNaN(d)) return "";
+  return d.toLocaleDateString(undefined, short ? {day:"numeric",month:"short",year:"numeric"} : {day:"numeric",month:"long",year:"numeric"});
+}
+function render(){
+  var g = $("grid"); g.innerHTML = "";
+  var n = 0;
+  LETTERS.forEach(function (l, i) {
+    var b = document.createElement("button");
+    b.className = "env" + (read[i] ? " read" : "");
+    b.setAttribute("aria-label", "Open when " + l.when);
+    var s = document.createElement("small"); s.textContent = "Open when… ";
+    var st = document.createElement("strong"); st.textContent = l.when;
+    var sp = document.createElement("span"); sp.className = "stamp"; sp.textContent = l.icon;
+    b.appendChild(s); b.appendChild(st); b.appendChild(sp);
+    if (read[i]) { var bd = document.createElement("span"); bd.className = "badge"; bd.textContent = read[i] === true ? "Opened" : "Opened " + fmt(read[i], true); b.appendChild(bd); }
+    b.onclick = function () { openLetter(i); };
+    g.appendChild(b);
+    if (read[i]) n++;
+  });
+  $("count").textContent = n === LETTERS.length ? "You’ve opened every letter. Read your favourites again!" :
+    (LETTERS.length - n) + " of " + LETTERS.length + " still sealed";
+}
+var lastFocus = null;
+function openLetter(i){
+  var l = LETTERS[i];
+  lastFocus = document.activeElement;
+  $("lt").textContent = "Open when… " + l.when;
+  $("lb").textContent = l.body;
+  $("veil").classList.add("on");
+  $("close").focus();
+  if (!read[i]) read[i] = new Date().toISOString();
+  $("od").textContent = read[i] === true ? "" : "Opened on " + fmt(read[i]);
+  save();
+}
+function closeLetter(){
+  $("veil").classList.remove("on");
+  render();
+  if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) {} }
+}
+$("close").onclick = closeLetter;
+$("veil").onclick = function (e) { if (e.target === $("veil")) closeLetter(); };
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLetter(); });
+$("random").onclick = function () {
+  var pool = [];
+  LETTERS.forEach(function (_, i) { if (!read[i]) pool.push(i); });
+  if (!pool.length) LETTERS.forEach(function (_, i) { pool.push(i); });
+  openLetter(pool[Math.floor(Math.random() * pool.length)]);
+};
+$("theme").onclick = function () {
+  var r = document.documentElement;
+  var dark = r.getAttribute("data-theme") === "dark" ||
+    (!r.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+};
+render();
+</script>
+</body>
+</html>
